@@ -10,6 +10,9 @@ Mission of this project is to learn and train a model to help people to detect t
 ## Author
 
 - [@rahatTamzid](https://www.github.com/rahatTamzid)
+- Rahat Tamzid 
+- M.Sc in Artificail Intelligence 
+- Matricola : VR526061
 
 
 ## Dataset
