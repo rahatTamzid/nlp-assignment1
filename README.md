@@ -88,7 +88,7 @@ plt.grid(True)
 plt.show()
 ```
 
-![Plot Short]([https://github.com/rahatTamzid/nlp-assignment1/blob/main/screenshot/bayse.png])
+![Plot Short]([/screenshot/bayes.png])
 
 
 
