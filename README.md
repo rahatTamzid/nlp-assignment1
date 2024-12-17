@@ -88,7 +88,7 @@ plt.grid(True)
 plt.show()
 ```
 
-![Plot Short]([/screenshot/bayes.png])
+![ScreenShot](/screenshot/bayes.png)
 
 
 
@@ -133,4 +133,4 @@ history = model.fit(Main_train, main_predication_train, epochs=100, batch_size=3
 main_trained = (model.predict(Main_test) > 0.5).astype(int)
 ```
 
-![Plot Short]([https://github.com/rahatTamzid/nlp-assignment1/blob/main/screenshot/ffnn.png])
+![ScreenShot](/screenshot/ffnn.png)
