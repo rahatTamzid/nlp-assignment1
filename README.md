@@ -88,7 +88,7 @@ plt.grid(True)
 plt.show()
 ```
 
-![ScreenShot](/screenshot/bayes.png)
+![ScreenShot](/screenshot/bayse.png)
 
 
 
