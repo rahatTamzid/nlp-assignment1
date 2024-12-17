@@ -12,7 +12,7 @@ Mission of this project is to learn and train a model to help people to detect t
 - [@rahatTamzid](https://www.github.com/rahatTamzid)
 
 
-## Information Section
+## Dataset
 
 [Download Dataset](https://www.kaggle.com/datasets/balaka18/email-spam-classification-dataset-csv)
 
@@ -88,7 +88,7 @@ plt.grid(True)
 plt.show()
 ```
 
-![Plot Short](https://github.com/rahatTamzid/nlp-assignment1/screenshot/bayes.png)
+![Plot Short]([https://github.com/rahatTamzid/nlp-assignment1/blob/main/screenshot/bayse.png])
 
 
 
@@ -133,4 +133,4 @@ history = model.fit(Main_train, main_predication_train, epochs=100, batch_size=3
 main_trained = (model.predict(Main_test) > 0.5).astype(int)
 ```
 
-![Plot Short](https://github.com/rahatTamzid/nlp-assignment1/screenshot/ffnn.png)
+![Plot Short]([https://github.com/rahatTamzid/nlp-assignment1/blob/main/screenshot/ffnn.png])
