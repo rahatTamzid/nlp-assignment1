@@ -1,8 +1,8 @@
 
-# Spam Detection Using FFNN and Naive Bayes
+# Spam Detection Using NLTK and FFNN 
 
-We are using a email classfication dataset with 3002 Column and 1000 rows of data.
-We are using Naive Byse Model and FFNN to train a model to detect is the Email is SPAM or not. 
+We are using a email classfication dataset with 3002 Column and 5112 rows of data.
+We are using Natrual Language Toolkit and FFNN to train a model to detect is the Email is SPAM or not. 
 
 Mission of this project is to learn and train a model to help people to detect the SPAM Mail. So they can safe out from virus and malware and other spam thing.
 
@@ -11,94 +11,68 @@ Mission of this project is to learn and train a model to help people to detect t
 
 - [@rahatTamzid](https://www.github.com/rahatTamzid)
 - Rahat Tamzid 
-- M.Sc in Artificail Intelligence 
-- Matricola : VR526061
+- M.Sc in Artificial Intelligence
+- Matricola : VR526061
 
 
-## Dataset
+## Information Section
 
 [Download Dataset](https://www.kaggle.com/datasets/balaka18/email-spam-classification-dataset-csv)
 
 ## Documentation
 
-In Both Model We have use the 80% of the data from dataset. and 20% of data for testing.
-
-
-## Naive bayes
-* Setup the dataset in the directory of the code file.
-```python
-dataset = pd.read_csv('./emails.csv')
-```
-
-you can change the dataset from here.
-
-* I am assigning 2 variable to design the dataset | Main_dataset variable I am dropping 1st and last column. Main_predication_dataset varible the predication.
-
-```python
-Main_dataset = dataset.drop(columns=["Email No.", "Prediction"])
-Main_predication_dataset = dataset["Prediction"]
-```
-
-* Training the Model
-```python
-Main_Trained, Trained_tested, Predication_train, Predication_test = train_test_split(train_set, predication_set, test_size=0.1, random_state=150)
-
-classifier = MultinomialNB()
-classifier.fit(Main_Trained, Predication_train)
-
-Model_Predication = classifier.predict(Trained_tested)
-```
-
-* Getting F1 Score, Config Martix and classification Report form the Model
-```python
-conf_matrix = confusion_matrix(Predication_test, Model_Predication)
-f1 = f1_score(Predication_test, Model_Predication)
-class_report = classification_report(Predication_test, Model_Predication)
-```
-
-* So as we know naive byse train model return result for one data at a time. let's keep the data in a array and show the plot
-```python
-
-train_sizes = np.linspace(0.1, 0.99, 10)
-f1_scores = []
-accuracies = []
-
-for train_size in train_sizes:
-    X_train_partial, _, y_train_partial, _ = train_test_split(
-        Main_Trained, Predication_train, train_size=train_size, random_state=150
-    )
-
-    classifier.fit(X_train_partial, y_train_partial)
-    y_pred = classifier.predict(Trained_tested)
-
-    f1_scores.append(f1_score(Predication_test, y_pred))
-    accuracies.append(accuracy_score(Predication_test, y_pred))
-```
-
-* Showing plot
-```python
-print(f1_scores)
-print(accuracies)
-
-plt.figure(figsize=(10, 6))
-plt.plot(train_sizes, f1_scores, label='F1 Score', marker='o')
-plt.plot(train_sizes, accuracies, label='Accuracy', marker='o')
-plt.xlabel('Training Set Size (Proportion)')
-plt.ylabel('Performance')
-plt.title('Naive Bayes Performance Over Increasing Training Set Size')
-plt.legend()
-plt.grid(True)
-plt.show()
-```
-
-![ScreenShot](/screenshot/bayse.png)
-
-
-
-
+In Both Model We have use the 95% of the data from dataset. and 5% of data for testing.
 
 ## FFNN
 
+* Importing Packages
+```python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Softmax
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.metrics import confusion_matrix, classification_report, f1_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+from datetime import datetime
+import random
+import nltk
+from nltk.corpus import stopwords
+
+```
+
+## Approach 1
+
+* NLTK Stopword Setup and Filtering
+```python
+nltk.download('stopwords')
+
+stop_words = stopwords.words('english')
+
+print(stop_words)
+
+dataset = pd.read_csv('/content/drive/MyDrive/Data Extract/nltk_project.csv')
+df_main = dataset.drop(columns=["Email No.", "Prediction"])
+
+print(df_main.sample(20))
+
+type(stop_words)
+
+filter = [item for item in df_main.columns if item not in stop_words]
+
+print(filter)
+print(len(df_columns))
+print(len(filter))
+
+dataset = pd.read_csv('/content/drive/MyDrive/Data Extract/nltk_project.csv')
+df = pd.DataFrame(dataset, columns=filter)
+print(len(df.columns))
+```
+
 * Setup the dataset in the directory of the code file.
 ```python
 dataset = pd.read_csv('./emails.csv')
@@ -109,7 +83,7 @@ you can change the dataset from here.
 * I am assigning 2 variable to design the dataset | Main_dataset variable I am dropping 1st and last column. Main_predication_dataset varible the predication.
 
 ```python
-Main_dataset = dataset.drop(columns=["Email No.", "Prediction"])
+Main_dataset = df.copy()
 Main_predication_dataset = dataset["Prediction"]
 ```
 
@@ -121,10 +95,11 @@ scaler = StandardScaler()
 Main_train = scaler.fit_transform(main_dataset_train)
 Main_test = scaler.transform(main_dataset_test)
 
+
 model = Sequential([
     Dense(128, activation='relu', input_shape=(Main_train.shape[1],)),
-    Dense(64, activation='relu'),
-    Dense(1, activation='sigmoid')
+    Dense(32, activation='relu'),
+    Dense(1, activation='sigmoid')  # For binary classification
 ])
 
 
@@ -136,4 +111,86 @@ history = model.fit(Main_train, main_predication_train, epochs=100, batch_size=3
 main_trained = (model.predict(Main_test) > 0.5).astype(int)
 ```
 
-![ScreenShot](/screenshot/ffnn.png)
+![Epoch](/screenshot/ep-1.png)
+
+
+![Confisuon Martrix, F1](/screenshot/ffnn-cof1.png)
+
+![Validation Map](/screenshot/ffnn-1.png)
+
+
+## Approach 2 Using LSTM
+
+* NLTK Stopword Setup and Filtering
+```python
+nltk.download('stopwords')
+
+stop_words = stopwords.words('english')
+
+print(stop_words)
+
+dataset = pd.read_csv('/content/drive/MyDrive/Data Extract/nltk_project.csv')
+df_main = dataset.drop(columns=["Email No.", "Prediction"])
+
+print(df_main.sample(20))
+
+type(stop_words)
+
+filter = [item for item in df_main.columns if item not in stop_words]
+
+print(filter)
+print(len(df_columns))
+print(len(filter))
+
+dataset = pd.read_csv('/content/drive/MyDrive/Data Extract/nltk_project.csv')
+df = pd.DataFrame(dataset, columns=filter)
+print(len(df.columns))
+```
+
+* Setup the dataset in the directory of the code file.
+```python
+dataset = pd.read_csv('./emails.csv')
+```
+
+you can change the dataset from here.
+
+* I am assigning 2 variable to design the dataset | Main_dataset variable I am dropping 1st and last column. Main_predication_dataset varible the predication.
+
+```python
+Main_dataset = df.copy()
+Main_predication_dataset = dataset["Prediction"]
+```
+
+* Traning the Model and Using 100 Epochs and Using 30 batch Size.
+```python
+main_dataset_train, main_dataset_test, main_predication_train, main_predication_test = train_test_split(Main_dataset, Main_predication_dataset, test_size=0.2, random_state=56)
+
+scaler = StandardScaler()
+Main_train = scaler.fit_transform(main_dataset_train)
+Main_test = scaler.transform(main_dataset_test)
+
+
+model = Sequential([
+    Embedding(input_dim=max_words, output_dim=128, input_length=max_len),  # Embedding layer
+    Bidirectional(LSTM(64, return_sequences=True)),  # Bidirectional LSTM
+    Dropout(0.2),
+    LSTM(32),
+    Dense(64, activation='relu'),
+    Dropout(0.2),
+    Dense(1, activation='sigmoid')  # Sigmoid for binary classification
+])
+
+
+model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
+
+history = model.fit(Main_train, main_predication_train, epochs=100, batch_size=30,
+                   validation_data=(Main_test, main_predication_test), verbose=1)
+
+main_trained = (model.predict(Main_test) > 0.5).astype(int)
+```
+
+![Epoch](/screenshot/ep-2.png)
+
+![Confisuon Martrix, F1](/screenshot/ffnn-cof2.png)
+
+![Validation Map](/screenshot/ffnn-2.png)
